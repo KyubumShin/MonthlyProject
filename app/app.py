@@ -9,9 +9,11 @@ from dash_html_components.Div import Div
 from dash_html_components.H1 import H1
 from dash_html_components.H3 import H3
 from dash_html_components.H4 import H4
+from dash_html_components.H5 import H5
 from dash_html_components.Hr import Hr
 from dash_html_components.P import P
 from dash_html_components.Th import Th
+from dash_html_components.Ul import Ul
 import pandas as pd
 import numpy as np
 
@@ -68,7 +70,8 @@ sidebar = html.Div(
             [
                 dbc.NavLink("Dataset", href="#dataload", active="exact"),
                 dbc.NavLink("Dataset confirm", href="#dataconfirm", active="exact"),
-                dbc.NavLink("EDA", href="#EDA", active="exact", external_link=False),
+                dbc.NavLink("EDA", href="#EDA", active="exact"),
+                dbc.NavLink("conclusion", href="#conclusion", active="exact"),
             ],
             vertical=True,
             pills=True,
@@ -77,61 +80,70 @@ sidebar = html.Div(
     style=SIDEBAR_STYLE,
 )
 
-controls_num = dbc.Row([
-            dbc.Col([
-                dbc.FormGroup(
-                    [
-                        dbc.Label("카테고리 범주"),
-                        dcc.Dropdown(
-                            id="hue-variable",
-                            options = [
-                                {"label": x, "value": i} for i ,x in enumerate(["all","stroke","not stroke"])
-                            ],
-                            value = 0
-                        )
-                    ]
-                ),
-            ]),
-            dbc.Col([
-                dbc.FormGroup(
-                    [
-                        dbc.Label("X 축 변수"),
-                        dcc.Dropdown(
-                            id="x-variable",
-                            options = [
-                                {"label": i, "value": i} for i in ["avg_glucose_level","bmi"]
-                            ],
-                            value = "avg_glucose_level"
-                        )
-                    ]
-                ),
-            ]),
-        ])
-
-
-controls_cat = dbc.Card(
-    [
-        dbc.FormGroup(
-            [
-                dbc.Label("X 축 변수"),
+controls_num = dbc.Container([
+    dbc.Row([
+        dbc.Col([
+            dbc.FormGroup([
+                dbc.Label("카테고리 범주"),
                 dcc.Dropdown(
-                    id = "x-variable-num",
-                    options = [
+                    id="hue-variable",
+                    options=[
+                        {"label": x, "value": i} for i, x in enumerate(["all", "stroke", "not stroke"])
+                    ],
+                    value=0
+                )
+            ]),
+        ]),
+        dbc.Col([
+            dbc.FormGroup([
+                dbc.Label("Y 축 변수"),
+                dcc.Dropdown(
+                    id="x-variable",
+                    options=[
+                        {"label": i, "value": i} for i in ["avg_glucose_level", "bmi"]
+                    ],
+                    value="avg_glucose_level"
+                )
+            ]),
+        ]),
+    ])
+])
+
+
+controls_cat = dbc.Container([
+    dbc.Row([
+        dbc.Col([
+            dbc.FormGroup([
+                dbc.Label("카테고리 범주"),
+                dcc.Dropdown(
+                    id="hue-variable2",
+                    options=[
+                        {"label": i, "value":i} for i in ["hypertension", "heart_disease", "smoking_status"]
+                    ],
+                    value="hypertension"
+                )
+            ]),
+        ]),
+    ])
+])
+
+
+controls = dbc.Container([
+    dbc.Row([
+        dbc.Col([
+            dbc.FormGroup([
+                dbc.Label("카테고리 범주"),
+                dcc.Dropdown(
+                    id="hue-variable3",
+                    options=[
                         {"label": i, "value":i} for i in ["gender", "ever_married", "work_type", "Residence_type"]
                     ],
-                    value = "gender"
+                    value="gender"
                 )
-            ]
-        )
-    ]
-)
-
-numberic_graph = dbc.Container(
-    [
-        
-    ],
-    fluid=True,
-)
+            ]),
+        ]),
+    ])
+])
 
 categoric_graph = dbc.Container(
     [
@@ -147,20 +159,6 @@ categoric_graph = dbc.Container(
 )
 stylesheet = dbc.themes.BOOTSTRAP
 app = dash.Dash(__name__, external_stylesheets=[stylesheet])
-
-dataload = dbc.Container(
-    [
-        html.H1("1. 사용 데이터셋"),
-        html.Hr(),
-        html.H3("뇌졸증 예측 데이터셋(Stroke Prediction Dataset)"),
-        html.H4("11가지의 임상 특징을 이용한 뇌졸증 예측"),
-        dbc.Row([
-            dbc.Button("데이터셋 바로가기", href="https://www.kaggle.com/fedesoriano/stroke-prediction-dataset")
-        ], justify="center"),
-        html.Hr(),
-    ],
-    fluid=True,
-)
 
 cattable_header = [
     html.Thead(html.Tr([html.Th("Category"), html.Th("Type"), html.Th("Detail")]))
@@ -181,8 +179,25 @@ cattable_body = [html.Tbody([
 ])]
 
 cattable = dbc.Table(cattable_header + cattable_body, bordered=True)
-
 settable = dbc.Table.from_dataframe(data.head(5), striped=True, bordered=True, hover=True)
+
+
+# 1장
+dataload = dbc.Container(
+    [
+        html.H1("1. 사용 데이터셋"),
+        html.Hr(),
+        html.H3("뇌졸증 예측 데이터셋(Stroke Prediction Dataset)"),
+        html.H4("11가지의 임상 특징을 이용한 뇌졸증 예측"),
+        dbc.Row([
+            dbc.Button("데이터셋 바로가기", href="https://www.kaggle.com/fedesoriano/stroke-prediction-dataset")
+        ], justify="center"),
+        html.Hr(),
+    ],
+    fluid=True,
+)
+
+# 2장
 
 dataconfirm = dbc.Container(
     [
@@ -208,7 +223,6 @@ dataconfirm = dbc.Container(
                 html.H2([
                     dbc.Row([
                         dbc.Col(dbc.Button("데이터셋 확인하기", color = "link", id = "toggle-dataset")),
-                        dbc.Col(dbc.Input(id = "input", placeholder="5", type="number"), md = 2)
                     ])
                 ])
             ),
@@ -259,7 +273,7 @@ data_EDA = dbc.Container(
                 dbc.Col(dcc.Graph(figure=num_graph("age")), md = 6),
                 dbc.Col(dbc.Card([
                     dbc.CardHeader(html.H3("Result")),
-                    dbc.CardBody(html.H4("나이가 증가함에 따라 데이터 안의 뇌졸증의 빈도가 급격하게 증가하는것을 확인할 수 있었다.")),
+                    dbc.CardBody(html.H4("나이가 증가함에 따라 데이터 안의 뇌졸증의 빈도가 급격하게 증가하는것을 확인할 수 있었다")),
                 ]))
             ],align="center")
         ],fluid=True,),
@@ -267,13 +281,21 @@ data_EDA = dbc.Container(
         dbc.Container([
             html.H3("2. 혈관에 관련된 변수들과의 상관관계를 조사하자"),
             html.Hr(),
+            html.Ul([
+                html.Li("Average Glucose Level"),
+                html.Li("BMI"),
+                html.Li("Hypertension"),
+                html.Li("Heart Disease"),
+                html.Li("Smoking Status"),
+            ]),
+            html.Hr(),
             html.H5("Average Glucose Level / Stroke"),
             dbc.Row(
                 [
-                    dbc.Col(dcc.Graph(id="agl", figure=num_graph("avg_glucose_level")),md=6),
+                    dbc.Col(dcc.Graph(id="agl", figure=num_graph("avg_glucose_level")),md=7),
                     dbc.Col(dbc.Card([
                         dbc.CardHeader(html.H3("Result")),
-                        dbc.CardBody(html.H4("평균 글루코스 수치 / 뇌졸증에 경우에는 뇌졸증인 사람들의 평균 글루코스 수치가 조금 더 높은 경향을 보이기는 하나, 확실한 특징이라고 생각하기에는 충분하지 않다"))
+                        dbc.CardBody(html.H4("Average Glucose Level / Stroke에 경우에는 뇌졸증인 사람들의 평균 혈당치가 조금 더 높은 경향을 보이기는 하나, 가장 큰 특징이라고 생각하기에는 충분하지 않다"))
                         ]))
                 ],
                 align="center",
@@ -282,28 +304,82 @@ data_EDA = dbc.Container(
             html.H5("BMI / Stroke"),
             dbc.Row(
                 [
-                    dbc.Col(dcc.Graph(id="bmi", figure=num_graph("bmi")),md=6),
+                    dbc.Col(dcc.Graph(id="bmi", figure=num_graph("bmi")),md=7),
                     dbc.Col(dbc.Card(
                         [
                             dbc.CardHeader(html.H3("Result")),
-                            dbc.CardBody(html.H4("bmi 수치는 stroke인 사람들과 아닌사람들 모두 비슷한 경향의 그래프를 보여서 특징을 찾을 수 없었다."))
+                            dbc.CardBody(html.H4("bmi 수치는 stroke인 사람들과 아닌사람들 모두 비슷한 경향의 그래프를 보여서 특징을 찾을 수 없었다"))
                         ]))
                 ],
                 align="center",
             ),
+            html.Br(),
+            html.H5("BMI,Average Glucose Level / Age and Stroke"),
+            html.Br(),
             dbc.Row(
                 [
                     dbc.Col([
-                        dbc.Row(controls_num),
-                        dbc.Col(dcc.Graph(id="scat_agl"))
-                    ], md = 6)
+                        dbc.Card([
+                            dbc.CardHeader(controls_num),
+                            dbc.CardBody(dcc.Graph(id="scat_agl"))
+                        ]),
+                    ], md = 7),
+                    dbc.Col(dbc.Card([
+                        dbc.CardHeader(html.H3("Result")),
+                        dbc.CardBody(html.H4("bmi와 뇌졸증의 관계에서 특징적인 상관관계를 찾는것이 힘들었고, 평균혈당치도 어느정도 영향을 끼치지만, 뇌졸증에 가장 큰 영향을 끼치는것은 나이라고 생각되어진다"))
+                    ]))
                 ],
                 align="center",
             ),
+            html.Br(),
+            html.H5("Hypertension, Heart Disease, Smoking Status / Stroke"),
+            html.Br(),
+            dbc.Row([
+                dbc.Col([
+                        dbc.Card([
+                            dbc.CardHeader(controls_cat),
+                            dbc.CardBody(dcc.Graph(id="hyper"))
+                        ]),
+                ], md = 7),
+                dbc.Col(dbc.Card([
+                    dbc.CardHeader(html.H3("Result")),
+                    dbc.CardBody(html.H4("Hypertension, Heart Disease를 가지고 있는 사람들의 뇌졸증 비율이 가지지 사람에 비해 월등히 높았고, Smoking Status은 생각 외로 각 카테고리에 비해 차이가 크지 않았다"))
+                ]))
+            ],align="center",),
+            html.Br(),
+            dbc.Row()
         ],fluid=True),
+        dbc.Container([
+            html.H3("3. 그 외의 변수들에 대해 조사해보자"),
+            html.Hr(),
+            html.Ul([
+                html.Li("Gender"),
+                html.Li("Ever Married"),
+                html.Li("Work type"),
+                html.Li("Residence type"),
+            ]),
+            html.Hr(),
+            html.H5("Gender, Ever Married, Work type, Residence type / Stroke"),
+            html.Br(),
+            dbc.Row([
+                dbc.Col([
+                        dbc.Card([
+                            dbc.CardHeader(controls),
+                            dbc.CardBody(dcc.Graph(id="else"))
+                        ]),
+                ], md = 7),
+                dbc.Col(dbc.Card([
+                    dbc.CardHeader(html.H3("Result")),
+                    dbc.CardBody(html.H4("Ever Married와 Work type에서 유의미한 Feature를 볼 수 있었다. Ever Married에서는 기혼자가 더 높은 뇌졸증 비율을 가지고 있는것을 알 수 있고, Work type에서는 Self-employed가 다른 항목보다 높은것을 알 수 있었다."))
+                ]))
+            ],align="center"),
+            html.Br(),
+        ],fluid=True),
+        html.Br(),
     ],fluid=True,
 )
 
+# scatter 조절함수
 @app.callback(
     Output("scat_agl","figure"),
     [
@@ -321,6 +397,32 @@ def scatter_graph(value, xaxis_value):
     fig = px.scatter(ddata, x="age", y=xaxis_value, color="stroke", color_continuous_scale=[(0.00, "orange"),(0.50, "orange"),(0.50, "blue"), (1.00, "blue")], opacity=0.5)
     return fig
 
+@app.callback(
+    Output("hyper","figure"),
+    Input("hue-variable2", "value")
+)
+def pie_graph1(value):
+    ddata = data.groupby(value).mean()
+    print(ddata.index)
+    fig = px.pie(ddata, values = "stroke", names = ddata.index)
+    return fig
+
+@app.callback(
+    Output("else","figure"),
+    Input("hue-variable3", "value")
+)
+def pie_graph2(value):
+    ddata = data.groupby(value).mean()
+    print(ddata.index)
+    fig = px.pie(ddata, values = "stroke", names = ddata.index)
+    return fig
+
+
+#4장
+result = dbc.Container([
+    html.H1("4. 결론"),
+
+])
 
 content = html.Div([
         dbc.Row([
@@ -333,7 +435,8 @@ content = html.Div([
         dataconfirm,
         html.A(id = "EDA"),
         data_EDA,
-        numberic_graph,
+        html.A(id = "conclusion"),
+        result
     ], id="page-content", style=CONTENT_STYLE
 )
 
