@@ -403,7 +403,6 @@ def scatter_graph(value, xaxis_value):
 )
 def pie_graph1(value):
     ddata = data.groupby(value).mean()
-    print(ddata.index)
     fig = px.pie(ddata, values = "stroke", names = ddata.index)
     return fig
 
@@ -413,7 +412,6 @@ def pie_graph1(value):
 )
 def pie_graph2(value):
     ddata = data.groupby(value).mean()
-    print(ddata.index)
     fig = px.pie(ddata, values = "stroke", names = ddata.index)
     return fig
 
@@ -421,8 +419,19 @@ def pie_graph2(value):
 #4장
 result = dbc.Container([
     html.H1("4. 결론"),
-
-])
+    html.Hr(),
+    html.Ol([
+        html.Li("Age와 Stroke의 상관관계가 매우 크다는것을 발견함"),
+        html.Li("Age와 Stroke의 상관관계가 매우 크다는것을 발견함"),
+        html.Li("Age와 Stroke의 상관관계가 매우 크다는것을 발견함"),
+        html.Li("Age와 Stroke의 상관관계가 매우 크다는것을 발견함")
+    ]),
+    dbc.Row(
+        dbc.Button("Github",href = "https://github.com/KyubumShin/MonthlyProject"),
+        justify="center",
+        align="center"
+    )
+], fluid=True)
 
 content = html.Div([
         dbc.Row([
