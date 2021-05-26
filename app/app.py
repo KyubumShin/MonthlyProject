@@ -73,7 +73,7 @@ sidebar = html.Div(
                 dbc.NavLink("Dataset", href="#dataload", active="exact"),
                 dbc.NavLink("Dataset confirm", href="#dataconfirm", active="exact"),
                 dbc.NavLink("EDA", href="#EDA", active="exact"),
-                dbc.NavLink("conclusion", href="#conclusion", active="exact"),
+                dbc.NavLink("Conclusion", href="#conclusion", active="exact"),
             ],
             vertical=True,
             pills=True,
