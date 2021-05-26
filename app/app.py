@@ -1,4 +1,5 @@
 import dash
+from dash_bootstrap_components._components.Card import Card
 from dash_bootstrap_components._components.CardBody import CardBody
 from dash_bootstrap_components._components.CardHeader import CardHeader
 from dash_bootstrap_components._components.Row import Row
@@ -11,6 +12,7 @@ from dash_html_components.H3 import H3
 from dash_html_components.H4 import H4
 from dash_html_components.H5 import H5
 from dash_html_components.Hr import Hr
+from dash_html_components.Li import Li
 from dash_html_components.P import P
 from dash_html_components.Th import Th
 from dash_html_components.Ul import Ul
@@ -189,9 +191,12 @@ dataload = dbc.Container(
         html.Hr(),
         html.H3("뇌졸증 예측 데이터셋(Stroke Prediction Dataset)"),
         html.H4("11가지의 임상 특징을 이용한 뇌졸증 예측"),
-        dbc.Row([
-            dbc.Button("데이터셋 바로가기", href="https://www.kaggle.com/fedesoriano/stroke-prediction-dataset")
-        ], justify="center"),
+        dbc.Card(
+            dbc.Row([
+            dbc.Col(dbc.Button("데이터셋 바로가기", href="https://www.kaggle.com/fedesoriano/stroke-prediction-dataset",size="lg"),md = 2),
+            dbc.Col(dbc.Button("Github",href = "https://github.com/KyubumShin/MonthlyProject",size="lg"), md = 2)
+            ], justify="center"),style={"padding" : "10px"}
+        ),
         html.Hr(),
     ],
     fluid=True,
@@ -420,16 +425,20 @@ def pie_graph2(value):
 result = dbc.Container([
     html.H1("4. 결론"),
     html.Hr(),
-    html.Ol([
-        html.Li("Age와 Stroke의 상관관계가 매우 크다는것을 발견함"),
-        html.Li("Age와 Stroke의 상관관계가 매우 크다는것을 발견함"),
-        html.Li("Age와 Stroke의 상관관계가 매우 크다는것을 발견함"),
-        html.Li("Age와 Stroke의 상관관계가 매우 크다는것을 발견함")
+    html.H3("1. Age와 Stroke의 상관관계가 매우 크다는것을 발견하였다"),
+    html.Br(),
+    html.H3("2. 혈관과 관련된 항목중 BMI와 Smoking Status를 제외한 나머지 항목들은 모두 예상했던것처럼 유의미한 Feature를 가진것을 확인했다"),
+    html.Ul([
+        html.Li("Smoking Status는 항목당 큰 차이는 없었으나 일반적인 상식상, 흡연은 뇌졸증에 큰 영향을 미치는것으로 판명되어있으므로, 데이터가 더 모이면 유의미한 Feature를 보여줄것이라 생각된다"),
+        html.Li("BMI에 대해서는 비만도따른 합병증으로 인하여 뇌졸증의 비율도 늘어날 것이라고 생각을 하였는데 생각 외로 그러한 Feature는 보이지 않았다. 이부분에 대해서 조금 더 다른 상관관계들과 연계하여 찾아볼 필요가 있다고 생각된다.")
+    ]),
+    html.H3("그 외의 항목에서는 Ever Married, Work Type에서 유의미한 Feature를 발견할 수 있었다"),
+    html.Ul([
+        html.Li("Ever Married에서 기혼자들이 더 높은 뇌졸증 비율을 보였는데 연령대가 높아질수록 기혼비율이 늘어났기 때문이라고 생각되어진다"),
+        html.Li("Work Type에서는 예상하지 못한 Feature를 발견했는데 이부분에 대해서는 조금 더 생각을 해 보아야 할 필요가 있다")
     ]),
     dbc.Row(
-        dbc.Button("Github",href = "https://github.com/KyubumShin/MonthlyProject"),
-        justify="center",
-        align="center"
+        
     )
 ], fluid=True)
 
