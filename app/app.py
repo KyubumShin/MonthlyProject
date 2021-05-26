@@ -1,21 +1,4 @@
 import dash
-from dash_bootstrap_components._components.Card import Card
-from dash_bootstrap_components._components.CardBody import CardBody
-from dash_bootstrap_components._components.CardHeader import CardHeader
-from dash_bootstrap_components._components.Row import Row
-from dash_core_components.Dropdown import Dropdown
-from dash_html_components.A import A
-from dash_html_components.Col import Col
-from dash_html_components.Div import Div
-from dash_html_components.H1 import H1
-from dash_html_components.H3 import H3
-from dash_html_components.H4 import H4
-from dash_html_components.H5 import H5
-from dash_html_components.Hr import Hr
-from dash_html_components.Li import Li
-from dash_html_components.P import P
-from dash_html_components.Th import Th
-from dash_html_components.Ul import Ul
 import pandas as pd
 import numpy as np
 
@@ -23,9 +6,6 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
-
-import dash_table
-from pandas.io.formats import style
 
 import plotly.express as px
 import plotly.figure_factory as ff
